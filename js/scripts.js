@@ -88,7 +88,8 @@ $(document).ready(function() {
         $("#scorePlayer2").text(randNumArray.join(" + "));
         score = arraySum(randNumArray);
         bankP2 = score;
-      } else if (randNumArray[i] === 1) {
+      } else {
+        alert("Bad Luck... You Got a 1. It's Player " + switchTurn(playerTurn) + "'s turn now~");
         randNumArray = [];
         playerTurn = switchTurn(playerTurn);
         bankP1 = 0;
@@ -136,9 +137,6 @@ $("#hold").click(function(){
       $("#wins").show();
       $("#p2Wins").fadeIn();
     }
-
-
-
   });
 
   // click function for "reset"
