@@ -12,52 +12,20 @@
     <div class="container">
     <h1>Pig Dice</h1>
       <div class="row">
-
+        <h3>Choose Your Opponent!</h3>
+        <a ref type="button" id="human" class="btn btn-danger" href="human.html">Human</a>
+        <a ref type="button" id="computer" class="btn btn-danger" href="ai.html">Computer</a><br><br>
         <span id="showDice"><img src='img/dice.png' alt="dice-one"></span><br><br>
-        <button type="button" id="roll" class="btn btn-success">Roll Dice</button>
-        <button type="button" id="hold" class="btn btn-warning">Hold</button>
 
       </div>
 
       <div class="row">
 
-          <h3 id="diceRoll"></h3>
 
-        <div class="scoreCount">
 
-          <div class="col-md-6">
-            <div class="row">
-              <h3>Player 1</h3>
-              <p id="scorePlayer1"></p>
-            </div>
-            <div class="row">
-              <div class="well">
-                <h4 id="player1Total"> </h4>
-              </div>
-            </div>
-              <h3>Current Total:</h3>
-              <h3 id="currentTotalOne"></h4>
-          </div>
 
-          <div class="col-md-6">
-            <h3>Player 2</h3>
-            <p id="scorePlayer2"></p>
-            <div class="well">
-              <h4 id="player2Total"> </h4>
-            </div>
-
-            <h3>Current Total:</h3>
-            <h3 id="currentTotalTwo"></h4>
-          </div>
 
       </div>
-
-      <div class="row" id="wins">
-        <h1> <span id="p1Wins">Player 1 Wins!</span><span id="p2Wins">Player 2 Wins!</span> </h1>
-        <br><br>
-        <button type="button" class="btn btn-primary" id="restart">Play Again?</button>
-      </div>
-
     </div>
   </body>
 </html>

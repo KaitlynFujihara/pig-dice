@@ -23,6 +23,11 @@ h4 {
   font-size: 24px;
 }
 
+a {
+  margin-right: 25px;
+  margin-left: 25px;
+}
+
 /* #showDice {
   display: none;
 } */
@@ -33,4 +38,9 @@ h4 {
 
 #p1Wins, #p2Wins {
   display: none;
+}
+.row {
+  display:block;
+  margin: 0 auto;
+  text-align:center;
 }

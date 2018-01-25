@@ -30,12 +30,27 @@ function switchTurn(playerTurn) {
   return nextTurn;
 }
 
+// function: determines the computer's actions
+
+function aiRoll() {
+  var aiTotal = 0;
+  var turn = 0;
+  var roll = numberGenerator();
+
+    if (roll !== 1) {
+      aiTotal += roll;
+    } else {
+      return 1;
+    }
+  return aiTotal;
+}
+
 // function: declare winner
-function findWinner(totalP1, totalP2) {
+function findWinner(totalP1, totalAI) {
   var winner = 0;
   if (totalP1 >= 100) {
     winner = 1;
-  } else if (totalP2 >= 100) {
+  } else if (totalAI >= 100) {
     winner = 2;
   }
   return winner;
@@ -68,45 +83,55 @@ $(document).ready(function() {
   var randNum = numberGenerator();
   var score = 0;
   var bankP1 = 0;
-  var bankP2 = 0;
   var bankAI = 0;
   var totalP1 = 0;
-  var totalP2 = 0;
   var totalAI = 0;
   var announceWinner = 0;
+  var aiResult = 0;
 
   // click function for "roll"
   $("#roll").click(function(){
     randNumArray.push(numberGenerator());
-
     for (var i = 0; i < randNumArray.length; i++) {
       if (randNumArray[i] !== 1 && playerTurn === 1) {
         $("#showDice").html(showDice(randNumArray[i]));
         $("#scorePlayer1").text(randNumArray.join(" + "));
         score = arraySum(randNumArray);
         bankP1 = score;
-      } else if (randNumArray[i] !== 1 && playerTurn === 2) {
-        $("#showDice").html(showDice(randNumArray[i]));
-        $("#scorePlayer2").text(randNumArray.join(" + "));
-        score = arraySum(randNumArray);
-        bankP2 = score;
-      } else {
-        alert("Bad Luck... You Got a 1. It's Player " + switchTurn(playerTurn) + "'s turn now~");
-        randNumArray = [];
-        playerTurn = switchTurn(playerTurn);
-        bankP1 = 0;
-        bankP2 = 0;
-      }
-    }
+
+        aiTurn = aiRoll(randNum);
+
+      } else if (randNumArray[i] === 1) {
+          playerTurn = switchTurn(playerTurn);
+          alert("You got a 1. AI's turn.")
+          bankP1 = 0;
+
+          aiResult = aiRoll();
+          if (aiResult === 1) {
+            alert("AI got a 1. Your Turn.");
+            playerTurn = switchTurn(playerTurn);
+            bankAI = 0;
+            $("#scoreAI").text(0);
+          } else {
+            bankAI += aiResult;
+            totalAI += bankAI;
+            alert("AI rolled a " + aiResult);
+            $("#AITotal").text(aiResult);
+            $("#currentTotalAI").text(totalAI);
+          }
+
+          score = arraySum(randNumArray);
+          randNumArray = [];
+          playerTurn = switchTurn(playerTurn);
+        }
 
     $("#player1Total").text(bankP1);
-    $("#player2Total").text(bankP2);
+    $("#AITotal").text(bankAI);
 
 
-    console.log(numberGenerator());
-    console.log(randNumArray);
     console.log(playerTurn);
-    console.log(score);
+    console.log(bankAI);
+    }
 
   });
   // click function for "hold"
@@ -118,17 +143,28 @@ $("#hold").click(function(){
     score = 0;
     playerTurn = switchTurn(playerTurn);
     randNumArray = [];
-  } else {
-    totalP2 = totalP2 + score;
-    $("#currentTotalTwo").text(totalP2);
-    score = 0;
-    playerTurn = switchTurn(playerTurn);
-    randNumArray = [];
-  }
-    bankP1 = 0;
-    bankP2 = 0;
+    $("#scorePlayer1").text(randNumArray.join(" + "));
+  bankP1 = 0;
 
-    announceWinner = findWinner(totalP1, totalP2);
+  aiResult = aiRoll();
+  if (aiResult === 1) {
+    alert("AI got a 1. Your Turn.");
+    playerTurn = switchTurn(playerTurn);
+    bankAI = 0;
+    bankAI = aiResult;
+    $("#scoreAI").text(0);
+  } else {
+    totalAI += bankAI;
+    alert("AI rolled a " + aiResult);
+    bankAI += aiResult;
+    $("#AITotal").text(aiResult);
+    $("#currentTotalAI").text(totalAI);
+    playerTurn = switchTurn(playerTurn);
+  }
+
+    bankAI = 0;
+}
+    announceWinner = findWinner(totalP1, totalAI);
     console.log(announceWinner);
 
     if (announceWinner === 1) {
@@ -138,7 +174,7 @@ $("#hold").click(function(){
     } else if (announceWinner === 2){
       $(".scoreCount").hide();
       $("#wins").show();
-      $("#p2Wins").fadeIn();
+      $("#AIWins").fadeIn();
     }
   });
 
