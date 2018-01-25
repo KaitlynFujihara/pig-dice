@@ -60,6 +60,9 @@ function showDice(randNum) {
   return imageURL;
 }
 
+// function: displays pig above player on turn
+
+
 // application-logic
 $(document).ready(function() {
   // declare variables
@@ -92,17 +95,27 @@ $(document).ready(function() {
         bankP2 = score;
       } else {
         alert("Bad Luck... You Got a 1. It's Player " + switchTurn(playerTurn) + "'s turn now~");
+        $("#scorePlayer1").text((""));
+        $("#scorePlayer2").text((""));
         randNumArray = [];
-        playerTurn = switchTurn(playerTurn);
         bankP1 = 0;
         bankP2 = 0;
+        playerTurn = switchTurn(playerTurn);
       }
     }
 
     $("#player1Total").text(bankP1);
     $("#player2Total").text(bankP2);
 
-
+    if (playerTurn === 1) {
+      $("#pig1").show();
+      $("#pig2").hide();
+    } else if (playerTurn === 2){
+      $("#pig2").show();
+      $("#pig1").hide();
+    } else {
+      alert("this is wrongggg")
+    }
     console.log(numberGenerator());
     console.log(randNumArray);
     console.log(playerTurn);
@@ -114,13 +127,17 @@ $("#hold").click(function(){
 
   if (playerTurn === 1) {
     totalP1 += score;
+    $("#scorePlayer1").text((""));
     $("#currentTotalOne").text(totalP1);
+    $(".flashPlayerOne").slideDown();
     score = 0;
     playerTurn = switchTurn(playerTurn);
     randNumArray = [];
   } else {
     totalP2 = totalP2 + score;
+    $("#scorePlayer2").text((""));
     $("#currentTotalTwo").text(totalP2);
+    $(".flashPlayerTwo").slideDown();
     score = 0;
     playerTurn = switchTurn(playerTurn);
     randNumArray = [];
