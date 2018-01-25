@@ -10,3 +10,27 @@ button {
   margin-left: 30px;
   margin-right: 30px;
 }
+
+p {
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+/* #showDice {
+  display: none;
+} */
+
+#wins {
+  display: none;
+}
+
+#p1Wins, #p2Wins {
+  display: none;
+}

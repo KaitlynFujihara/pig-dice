@@ -1,134 +1,149 @@
-var outputArray = [];
-var player = 1;
+// business-logic
 
-var numGenerator = function() {
+// function: generates random number from 1 to 6
+function numberGenerator() {
   var genNum = 1 + Math.floor(Math.random() * 6);
   return genNum;
 }
 
-function totalPoints(score, randNum) {
-  if (randNum !== 1) {
-    return true;
-  }
-  return false;
-}
-
-var switchPlayers = function(randNum, totalSum) {
-  if (player === 1){
-    alert("Start turn p1");
-    $("#scorePlayerOne").text();
-    outputArray.push(randNum);
-    $("#scorePlayerOne").text(outputArray.join("+"));
-      if(randNum === 1) {
-      alert("end turn p1");
-      alert("switch players");
-      randNum === 0;
-      outputArray = [];
-      player = 2;
-
+// function: finds the sum of randNumArray
+function arraySum(randNumArray) {
+  sumTotal = 0;
+  for (var i = 0; i < randNumArray.length; i++) {
+    if (randNumArray[i] !== 1) {
+    sumTotal += randNumArray[i];
+    } else {
+      sumTotal = 0;
     }
-    return outputArray;
   }
-  if (player === 2){
-    alert("Start turn p2");
-    $("#scorePlayerTwo").text();
-    outputArray.push(randNum);
-    $("#scorePlayerTwo").text(outputArray.join("+"));
-      if(randNum === 1) {
-      alert("end turn p2");
-      alert("switch players");
-      randNum === 0;
-      outputArray = [];
-      player = 1;
-    }
-    return outputArray;
-  }
-
+  return sumTotal;
 }
 
-var outputSum = function (outputArray) {
-  var sumAmount = 0;
-  var message = "";
-  for (var i = 0; i < outputArray.length; i++){
-    sumAmount += outputArray[i];
+// function: switches players' turn
+function switchTurn(playerTurn) {
+  var nextTurn = 0;
+  if (playerTurn === 1) {
+    nextTurn = 2;
+  } else {
+    nextTurn = 1;
   }
-  return sumAmount;
-  return message;
+  return nextTurn;
 }
 
-var findCurrentTotal = function (totalSum, currentSum) {
-  var newTotalSum = true;
-  if(currentSum + totalSum >= currentSum) {
-    return false;
+// function: declare winner
+function findWinner(totalP1, totalP2) {
+  var winner = 0;
+  if (totalP1 >= 100) {
+    winner = 1;
+  } else if (totalP2 >= 100) {
+    winner = 2;
   }
+  return winner;
 }
 
+// function: displays the corresponding dice image
+function showDice(randNum) {
+  var imageURL = "";
+  if (randNum === 1) {
+    imageURL = "<img src='img/one.png' id='diceRoll'>";
+  } else if (randNum === 2) {
+    imageURL = "<img src='img/two.png' id='diceRoll'>";
+  } else if (randNum === 3) {
+    imageURL = "<img src='img/three.png' id='diceRoll'>";
+  } else if (randNum === 4) {
+    imageURL = "<img src='img/four.png' id='diceRoll'>";
+  } else if (randNum === 5) {
+    imageURL = "<img src='img/five.png' id='diceRoll'>";
+  } else {
+    imageURL = "<img src='img/six.png' id='diceRoll'>";
+  }
+  return imageURL;
+}
+
+// application-logic
 $(document).ready(function() {
+  // declare variables
+  var randNumArray = [];
+  var playerTurn = 1;
+  var randNum = numberGenerator();
   var score = 0;
-  var total = 0;
-  var totalSum = 0;
-  var currentSum = 0;
-  var totalAmount = 0;
+  var bankP1 = 0;
+  var bankP2 = 0;
+  var totalP1 = 0;
+  var totalP2 = 0;
+  var announceWinner = 0;
 
-  $("#roll").click(function() {
+  // click function for "roll"
+  $("#roll").click(function(){
+    randNumArray.push(numberGenerator());
 
-    var randNum = numGenerator();
-    var playerTurn = switchPlayers(randNum, outputArray);
-    var scoreTracker = totalPoints(randNum);
-    totalSum = outputSum(outputArray);
-
-
-    if(player === 1) {
-        $("#totalPlayerOne").text("= " + totalSum);
-    } else if (player === 2) {
-        $("#totalPlayerTwo").text("= " + totalSum);
+    for (var i = 0; i < randNumArray.length; i++) {
+      if (randNumArray[i] !== 1 && playerTurn === 1) {
+        $("#showDice").html(showDice(randNumArray[i]));
+        $("#scorePlayer1").text(randNumArray.join(" + "));
+        score = arraySum(randNumArray);
+        bankP1 = score;
+      } else if (randNumArray[i] !== 1 && playerTurn === 2) {
+        $("#showDice").html(showDice(randNumArray[i]));
+        $("#scorePlayer2").text(randNumArray.join(" + "));
+        score = arraySum(randNumArray);
+        bankP2 = score;
+      } else if (randNumArray[i] === 1) {
+        randNumArray = [];
+        playerTurn = switchTurn(playerTurn);
+        bankP1 = 0;
+        bankP2 = 0;
+      }
     }
 
-    console.log(player);
-    console.log(randNum);
-    console.log(outputArray);
-    console.log(scoreTracker);
+    $("#player1Total").text(bankP1);
+    $("#player2Total").text(bankP2);
+
+
+    console.log(randNumArray);
+    console.log(playerTurn);
+    console.log(score);
 
   });
-  console.log(currentSum);
-    $("#hold").click(function() {
-      currentSum = outputSum(outputArray);
-      totalSum = outputSum(outputArray);
-      currentTotal = currentSum + totalSum;
-      totalAmount = findCurrentTotal(totalSum, currentSum);
-      var sumPlayer1 = 0;
-      var sumPlayer2 = 0;
-      alert("PASS");
+  // click function for "hold"
+$("#hold").click(function(){
 
-       if (player === 1) {
-        outputArray = [];
-        $("#totalPlayerOne").text(totalSum);
-        sumPlayer1 = totalSum;
-        if(totalAmount === false) {
-          $("#currentTotalOne").text(totalSum);
-        } else {
-          $("#currentTotalOne").text(sumPlayer1 + currentTotal);
-        }
-        player = 2;
+  if (playerTurn === 1) {
+    totalP1 = totalP1 + score;
+    $("#currentTotalOne").text(totalP1);
+    score = 0;
+    playerTurn = switchTurn(playerTurn);
+    randNumArray = [];
+  } else {
+    totalP2 = totalP2 + score;
+    $("#currentTotalTwo").text(totalP2);
+    score = 0;
+    playerTurn = switchTurn(playerTurn);
+    randNumArray = [];
+  }
+    bankP1 = 0;
+    bankP2 = 0;
 
-      } else if (player === 2) {
-       outputArray = [];
-       $("#totalPlayerTwo").text(totalSum);
-       sumPlayer2 = totalSum;
-       if(totalAmount === false) {
-         $("#currentTotalTwo").text(totalSum);
-       } else {
-         $("#currentTotalTwo").text(sumPlayer2 + currentTotal);
-       }
-       player = 1;
-     }
+    announceWinner = findWinner(totalP1, totalP2);
+    console.log(announceWinner);
 
-
-      console.log(currentSum);
-      console.log(currentTotal);
-
+    if (announceWinner === 1) {
+      $(".scoreCount").hide();
+      $("#wins").show();
+      $("#p1Wins").fadeIn();
+    } else if (announceWinner === 2){
+      $(".scoreCount").hide();
+      $("#wins").show();
+      $("#p2Wins").fadeIn();
+    }
 
 
 
   });
+
+  // click function for "reset"
+  $("#restart").click(function() {
+    location.reload();
+  });
+
 });
