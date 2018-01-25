@@ -14,26 +14,31 @@
       <div class="row">
 
         <img src="img/dice.png" alt="dice-one"><br><br>
-        <button type="button" id="roll" class="btn btn-default">Roll Dice</button>
-        <button type="button" id="pass" class="btn btn-default">Pass Turn</button>
+        <button type="button" id="roll" class="btn btn-success">Roll Dice</button>
+        <button type="button" id="hold" class="btn btn-warning">Hold</button>
 
       </div>
 
       <div class="row">
 
-          <h3><span id="diceRoll"></span></h3>
+          <h3 id="diceRoll"></h3>
 
         <div class="scoreCount">
 
           <div class="col-md-6">
-            <span id="playerOneturn"></span>
               <h3>Player 1</h3>
-              <span id="scorePlayerOne"></span>
+              <p id="scorePlayerOne"></p>
+              <h4 id="totalPlayerOne"></h4>
+              <h3>Current Total:</h3>
+              <h3 id="currentTotalOne"></h4>
           </div>
 
           <div class="col-md-6">
             <h3>Player 2</h3>
-            <span id="scorePlayerTwo"></span>
+            <p id="scorePlayerTwo"></p>
+            <h4 id="totalPlayerTwo"></h4>
+            <h3>Current Total:</h3>
+            <h3 id="currentTotalTwo"></h4>
           </div>
 
       </div>
